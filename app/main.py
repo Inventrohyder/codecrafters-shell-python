@@ -23,6 +23,7 @@ def main():
         built_in_commands = {
             "echo",
             "exit",
+            "pwd",
             "type",
         }
 
@@ -44,6 +45,8 @@ def main():
                     sys.stdout.write(f"{arguments[0]} is {cmd_path}\n")
                 else:
                     sys.stdout.write(f"{arguments[0]}: not found\n")
+        elif cmd == "pwd":
+            sys.stdout.write(os.getcwd() + "\n")
         elif cmd not in built_in_commands:
             cmd_exists, cmd_path = check_command_exists(cmd)
             if cmd_exists:
