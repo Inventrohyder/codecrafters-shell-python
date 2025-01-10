@@ -28,7 +28,7 @@ def cd(arguments: list[str]) -> None:
         return
 
     try:
-        os.chdir(arguments[0])
+        os.chdir(os.path.expanduser(arguments[0]))
     except FileNotFoundError:
         sys.stdout.write(f"cd: {arguments[0]}: No such file or directory\n")
         return
@@ -66,7 +66,7 @@ def main():
 
         command = input()
 
-        command_parts: list[str] = command.split(sep=" ")
+        command_parts: list[str] = command.strip().split(sep=" ")
 
         cmd: str = command_parts[0]
         arguments: list[str] = command_parts[1:]
