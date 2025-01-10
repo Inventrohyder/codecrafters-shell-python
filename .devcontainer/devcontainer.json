@@ -23,6 +23,7 @@
     "vscode": {
       "extensions": [
         "ms-python.python",
+        "tamasfe.even-better-toml",
         "trunk.io",
         "yzhang.markdown-all-in-one"
       ]
