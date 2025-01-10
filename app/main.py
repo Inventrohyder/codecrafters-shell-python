@@ -4,7 +4,7 @@ import sys
 from functools import partial
 from typing import Callable
 
-PATH = os.environ.get("PATH")
+PATH = os.environ.get("PATH") or ""
 PATH_LIST = PATH.split(os.pathsep)
 
 BUILT_IN_COMMANDS: set[str] = {
@@ -26,7 +26,7 @@ def _check_command_exists(command: str) -> tuple[bool, str | None]:
 
 def cd(arguments: list[str]) -> None:
     if len(arguments) == 0:
-        os.chdir(os.getenv("HOME"))
+        os.chdir(os.getenv("HOME") or "")
         return
 
     try:
@@ -85,29 +85,51 @@ def _parse_redirection_target(
 parse_stdout_redirection = partial(
     _parse_redirection_target, redirect_markers=[">", "1>"]
 )
+parse_stdout_append_redirection = partial(
+    _parse_redirection_target, redirect_markers=[">>", "1>>"]
+)
 parse_stderr_redirection = partial(_parse_redirection_target, redirect_markers=["2>"])
+parse_stderr_append_redirection = partial(
+    _parse_redirection_target, redirect_markers=["2>>"]
+)
 
 
 def parse_command_redirections(
     command_parts: list[str],
-) -> tuple[list[str], str | None, str | None]:
+) -> tuple[list[str], tuple[str | None, bool], tuple[str | None, bool]]:
     command_parts, std_output_file = parse_stdout_redirection(command_parts)
-    command_parts, std_err_file = parse_stderr_redirection(command_parts)
+    if std_output_file is None:
+        command_parts, std_output_file = parse_stdout_append_redirection(command_parts)
+        stdout_append = True if std_output_file else False
+    else:
+        stdout_append = False
 
-    return command_parts, std_output_file, std_err_file
+    command_parts, std_err_file = parse_stderr_redirection(command_parts)
+    if std_err_file is None:
+        command_parts, std_err_file = parse_stderr_append_redirection(command_parts)
+        stderr_append = True if std_err_file else False
+    else:
+        stderr_append = False
+
+    return (
+        command_parts,
+        (std_output_file, stdout_append),
+        (std_err_file, stderr_append),
+    )
 
 
 def _handle_program_call(
     program_func: Callable[[list[str]], None], command_parts: list[str]
 ) -> None:
-    command_parts, std_output_file, std_err_file = parse_command_redirections(
-        command_parts
+    command_parts, (std_output_file, stdout_append), (std_err_file, stderr_append) = (
+        parse_command_redirections(command_parts)
     )
 
     if std_output_file is not None:
         try:
             original_stdout = sys.stdout
-            sys.stdout = open(std_output_file, "w")
+            mode = "a" if stdout_append else "w"
+            sys.stdout = open(std_output_file, mode)
         except IOError as e:
             sys.stderr.write(f"Failed to open {std_output_file}: {str(e)}\n")
             return
@@ -115,7 +137,8 @@ def _handle_program_call(
     if std_err_file is not None:
         try:
             original_stderr = sys.stderr
-            sys.stderr = open(std_err_file, "w")
+            mode = "a" if stderr_append else "w"
+            sys.stderr = open(std_err_file, mode)
         except IOError as e:
             sys.stderr.write(f"Failed to open {std_err_file}: {str(e)}\n")
             return
@@ -132,7 +155,7 @@ def _handle_program_call(
         sys.stderr = original_stderr
 
 
-def main():
+def main() -> None:
     while True:
         sys.stdout.write("$ ")
 
