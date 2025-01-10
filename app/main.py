@@ -1,4 +1,5 @@
 import os
+import shlex
 import sys
 from typing import Callable
 
@@ -66,7 +67,10 @@ def main():
 
         command = input()
 
-        command_parts: list[str] = command.strip().split(sep=" ")
+        command_parts: list[str] = shlex.split(command)
+
+        if not command_parts:
+            continue
 
         cmd: str = command_parts[0]
         arguments: list[str] = command_parts[1:]
