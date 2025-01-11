@@ -18,6 +18,8 @@ runtimes:
 # This is the section where you manage your linters. (https://docs.trunk.io/check/configuration)
 lint:
   enabled:
+    - actionlint@1.7.6
+    - hadolint@2.12.1-beta
     - taplo@0.9.3
     - mypy@1.14.1
     - bandit@1.8.0
