@@ -1,0 +1,22 @@
+name: Trunk Check
+on:
+  pull_request:
+
+permissions: read-all
+
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  trunk_check:
+    name: Trunk Check
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: trunk-io/trunk-action@v1
+        with:
+          arguments: --github-annotate-new-only=false

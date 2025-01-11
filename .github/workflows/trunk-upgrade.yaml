@@ -1,0 +1,18 @@
+name: Trunk Upgrade
+on:
+  schedule:
+    - cron: 0 0 * * MON  # Every Monday at midnight
+  workflow_dispatch: {}  # Allow manual triggers
+
+permissions: read-all
+
+jobs:
+  upgrade:
+    name: Upgrade Trunk
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: trunk-io/trunk-action/upgrade@v1 
