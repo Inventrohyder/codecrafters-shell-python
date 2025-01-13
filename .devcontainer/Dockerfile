@@ -1,6 +1,7 @@
 FROM mcr.microsoft.com/devcontainers/python:1-3.12-bookworm
 
 # Install CodeCrafters CLI
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN curl https://codecrafters.io/install.sh | sh
 
 # Create non-root user
