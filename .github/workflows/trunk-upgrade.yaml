@@ -13,6 +13,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      issues: write # ✅ needed to create/edit labels
     steps:
       - uses: actions/checkout@v4
       - uses: trunk-io/trunk-action/upgrade@v1
