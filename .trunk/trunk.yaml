@@ -21,16 +21,16 @@ lint:
     - actionlint@1.7.7
     - hadolint@2.12.1-beta
     - taplo@0.9.3
-    - mypy@1.17.1
+    - mypy@1.18.2
     - bandit@1.8.6
-    - black@25.1.0
-    - checkov@3.2.461
+    - black@25.11.0
+    - checkov@3.2.493
     - git-diff-check
-    - isort@6.0.1
+    - isort@7.0.0
     - markdownlint@0.45.0
     - osv-scanner@2.0.3
     - prettier@3.6.2
-    - ruff@0.12.7
+    - ruff@0.14.5
     - shellcheck@0.10.0
     - shfmt@3.6.0
     - trufflehog@3.90.5
