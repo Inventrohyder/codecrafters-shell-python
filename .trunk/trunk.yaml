@@ -24,7 +24,7 @@ lint:
     - mypy@1.19.1
     - bandit@1.9.2
     - black@25.12.0
-    - checkov@3.2.495
+    - checkov@3.2.496
     - git-diff-check
     - isort@7.0.0
     - markdownlint@0.47.0
