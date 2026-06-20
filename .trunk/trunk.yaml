@@ -24,13 +24,13 @@ lint:
     - mypy@2.1.0
     - bandit@1.9.4
     - black@26.5.1
-    - checkov@3.2.533
+    - checkov@3.3.1
     - git-diff-check
     - isort@8.0.1
     - markdownlint@0.48.0
     - osv-scanner@2.3.8
-    - prettier@3.8.3
-    - ruff@0.15.16
+    - prettier@3.8.4
+    - ruff@0.15.17
     - shellcheck@0.11.0
     - shfmt@3.6.0
     - trufflehog@3.95.5
